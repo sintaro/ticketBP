@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}購入{% endblock %}
+
+{% block content %}
+  <form method="post">
+  {% csrf_token %}
+  <ul>
+    <li><label>開催日: </label><span>{{ ticket.start_date }}</span></li>
+    <li><label>カテゴリー: </label><span>{{ ticket.category.name }}</span></li>
+    <li><label>チケット名: </label><span>{{ ticket.name }}</span></li>
+    <li><label>金額: </label><span>{{ ticket.price_display }}</span></li>
+    <li><label>在庫枚数: </label><span>{{ ticket.stock_amount_display }}</span></li>
+    {{ form.as_ul }}
+    <input type="submit" value="カートに入れる" />
+  </ul>
+  </form>
+{% endblock %}
