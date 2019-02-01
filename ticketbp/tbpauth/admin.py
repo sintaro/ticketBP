@@ -1,18 +1,24 @@
-from django.contrib import admin
+from .models import User, Department
 from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import ugettext_lazy as _
+from django.contrib import admin
+from django.utils.translation import gettext, gettext_lazy as _
 
-from . import models
+# Register your models here.
+@admin.register(Department)
+class AdminDepartment(admin.ModelAdmin):
+    pass
 
+@admin.register(User)
+class AdminUserAdmin(UserAdmin):
 
-@admin.register(models.User)
-class TicketBPUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('email',
-                                         'last_name', 'first_name',
-                                         'address1', 'address2')}),
+        (_('Personal info'), {'fields': ('full_name', 'email','departments')}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
                                        'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
+    list_display = ('username', 'email', 'full_name', 'is_staff')
+    search_fields = ('username', 'full_name', 'email')
+    filter_horizontal = ('groups', 'user_permissions','departments')
+
