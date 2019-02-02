@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<div id="header-top">
+  <section class="container clearfix">
+    <nav class="header-top-nav">
+      <ul>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'tbpauth:mypage' %}">マイページ　{{ user.get_full_name }}</a></li>
+<!--           <li><a href="{% url 'cart:list' %}"><i class="icon-shopping-cart"></i>カート ({{ request.cart.num_items }})</a></li>
+          <li><a href="{% url 'tickets:sell' %}"><i class="icon-plus-sign"></i>出品</a></li>
+        <li><a href="contact_us.html"><i class="icon-envelope"></i>メッセージ</a></li> -->
+          <li><a href="{% url 'logout' %}"><i class="icon-user"></i>ログアウト</a></li>
+<!-- 専門家の時のheadert-top-navまだ -->
+        {% else %}
+          <li><a href="#"><i class="icon-headphones"></i>専門家無料登録</a></li>
+<!--           <li><a href="{% url 'login' %}"><i class="icon-user"></i>ログイン</a></li> -->
+          <li><a href="login.html" id="login-panel"><i class="icon-user"></i>ログイン</a></li>
+
+        {% endif %}      
+
+      </ul>
+    </nav>
+    <div class="header-search">
+      <form>
+          <input type="text" value="お悩み検索" onfocus="if(this.value=='お悩み検索')this.value='';" onblur="if(this.value=='')this.value='お悩み検索';">
+          <button type="submit" class="search-submit"></button>
+      </form>
+    </div>
+  </section>
+</div>

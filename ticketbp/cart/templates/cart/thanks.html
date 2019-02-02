@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}注文完了{% endblock %}
+
+{% block content %}
+
+  <p>購入ありがとうございます。<br/>
+    下記の口座に代金を入金ください。<br/>
+    入金確認後にチケットを登録住所に郵送します。</p>
+  <ul>
+    <li>銀行名: ジャンゴ銀行</li>
+    <li>支店名: ラインハルト支店</li>
+    <li>普通</li>
+    <li>口座番号: 9999999</li>
+    <li>名義: チケットビーピー</li>
+    <li>入金金額:{{ total_price_display }} </li>
+  </ul>
+  <p>振込名義名はユーザー名と同じ名前にしてください</p>
+  <a href="{% url 'tickets:list' %}">トップへ</a>
+{% endblock %}

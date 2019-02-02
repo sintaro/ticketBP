@@ -21,6 +21,9 @@ class Department(models.Model):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """ユーザー AbstractUserをコピペし編集"""
+    address1 = models.CharField("住所1", max_length=32, blank=True, null=True)
+    address2 = models.CharField("住所2", max_length=128, blank=True, null=True)
+
 
     uuid = models.UUIDField(default=uuid_lib.uuid4,
                             primary_key=True, editable=False)
@@ -84,4 +87,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # 既存メソッドの変更
     def get_full_name(self):
-        return self.full_name
+        return self.username

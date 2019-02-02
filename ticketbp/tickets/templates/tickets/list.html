@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
+{% block metadescription %}テストディスクリプション{% endblock %}
 {% block title %}出品一覧{% endblock %}
 
 {% block content %}
+{% include 'includes/first.html' %}
   <h1>チケット！</h1>
   <table>
     <thead>
@@ -15,37 +17,25 @@
     </tr>
     </thead>
     <tbody>
-    {% for ticket in tickets%}
+    {% for ticket in tickets %}
       <tr>
-        <td>{{ticket.start_date}}</td>
-        <td>{{ticket.category.name}}</td>
-        <td>{{ticket.name}}</td>
-        <td>{{ticket.price_display}}</td>
-          {% if user.is_authenticated %}
-             <td><a href="{% url 'tickets:detail' ticket_id=ticket.id %}">購入</a></td>
-          {% else %}
+        <td>{{ ticket.start_date }}</td>
+        <td>{{ ticket.category.name }}</td>
+        <td>{{ ticket.name }}</td>
+        <td>{{ ticket.price_display }}</td>
+        {% if user.is_authenticated %}
+          <td><a href="{% url 'tickets:detail' ticket_id=ticket.id %}">購入</a></td>
+        {% else %}
           <td></td>
-          {% endif%}
+        {% endif %}
       </tr>
-    {%empty%}
+    {% empty %}
       <tr>
         <td colspan="5">チケットはありませんでした</td>
       </tr>
     {% endfor %}
     </tbody>
   </table>
-
-  <div class="paginator">
-    {% if tickets.has_previous %}
-      <a href ="?page={{ tickets.previoust_page_number }}">&lt; 前のページ</a>}}"
-    {% else%}
-      <span>&lt; 前のページ</span>
-  {%endif%}
-       <span class="current-page">{{ tickets.number }}</span>
-{% if tickets.has_next %}
-       <a href="?page={{ tickets.next_page_number }}">次のページ &gt;</a>
-      {% else %}
-      <span>次のページ &gt;</span>
-      {% endif %}
-  </div>
+  {% include 'includes/page.html' %}
 {% endblock %}
+

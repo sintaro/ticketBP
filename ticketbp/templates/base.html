@@ -1,41 +1,49 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>チケットBP - {% block title %}{% endblock %}</title>
-  <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css" />
-  <link href="//fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet" />
+  <link href="{% static 'css/skins/blue.css' %}" rel="stylesheet">
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+
+  <link href="{% static 'css/base.css' %}" rel="stylesheet">
+  <link href="{% static 'css/lists.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
+  <link href="{% static 'css/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/fontello/css/fontello.css' %}" rel="stylesheet">
+
+  <meta name="description" content="{% block metadescription %}{% endblock %}">
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+  <title>{% block title %}{% endblock %} - モウヤダ！</title>
 </head>
 
 <body>
-
-{% block header %}
-  <div class="header">
-    <div class="wrapper">
-      <ul>
-        <li><a class="brand" href="{% url 'tickets:list' %}">チケットBP</a></li>
-      </ul>
-      {% if user.is_authenticated %}
-        <ul>
-          <li><a href="{% url 'tbpauth:mypage' %}">{{ user.get_full_name }}</a></li>
-          <li><a href="{% url 'cart:list' %}">カート ({{ request.cart.num_items }})</a></li>
-          {# <li><a href="{% url 'tickets:sell' %}">出品</a></li> #}
-          <li><a href="{% url 'logout' %}">ログアウト</a></li>
-        </ul>
-      {% else %}
-        <ul>
-          <li><a href="{% url 'login' %}">ログイン</a></li>
-        </ul>
-      {% endif %}
-    </div>
-  </div>
-{% endblock %}
-
-<div class="wrapper">
+<div class="wrap" class="grid_1200">
+  {% include 'includes/header.html' %}
   {% block content %}
   {% endblock %}
 </div>
+{% include 'includes/footer.html' %}
+<!-- js -->
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-ui-1.10.3.custom.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.easing.1.3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/html5.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jflickrfeed.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.inview.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.tipsy.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tabs.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.flexslider.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.carouFredSel-6.2.1-packed.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.scrollTo.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.nav.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/tags.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.bxslider.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
 
 </body>
 </html>

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}マイページ{% endblock %}
+
+{% block content %}
+<ul>
+  <li>名前: {{ profile_user.get_full_name }}</li>
+  <li>住所: {{ profile_user.address }}</li>
+</ul>
+<a href="{% url 'tbpauth:mypage_edit' %}">変更</a>
+
+<h3>購入履歴</h3>
+<table>
+  <thead>
+  <tr>
+    <th>開催日</th>
+    <th>カテゴリー</th>
+    <th>チケット名</th>
+    <th>数量</th>
+    <th>購入日</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for purchase in purchases %}
+    <tr>
+      <td>{{ purchase.ticket.start_date }}</td>
+      <td>{{ purchase.ticket.category.name }}</td>
+      <td>{{ purchase.ticket.name }}</td>
+      <td>{{ purchase.amount_display }}</td>
+      <td>{{ purchase.bought_at }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <td colspan="5">購入履歴はありませんでした</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+  <h3>出品履歴</h3>
+  <table>
+  <thead>
+  <tr>
+    <th>開催日</th>
+    <th>カテゴリー</th>
+    <th>チケット名</th>
+    <th>残枚数</th>
+    <th>ステータス</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for ticket in selling_tickets %}
+  <tr>
+    <td>{{ ticket.start_date }}</td>
+    <td>{{ ticket.category.name }}</td>
+    <td>{{ ticket.name }}</td>
+    <td>{{ ticket.stock_amount_display }}</td>
+     {% if ticket.status_is_display %}
+      <td>
+      <a href="{% url 'tickets:manage' ticket_id=ticket.id %}">
+       {{ ticket.get_status_display }}
+      </td>
+      {% else %}
+           <td>{{ ticket.get_status_display }}</td>
+      {% endif %}
+          
+  </tr>
+   {% empty %}
+    <tr>
+      <td colspan="5">出品履歴はありませんでした</td>
+    </tr>
+      {% endfor %}
+  </tbody>
+  </table>
+{% endblock %}

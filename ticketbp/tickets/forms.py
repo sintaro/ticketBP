@@ -1,5 +1,7 @@
 from django import forms
 
+from . import models
+
 
 class TicketCartForm(forms.Form):
     """ チケットをカートに入れるフォーム
@@ -32,3 +34,15 @@ class TicketCartForm(forms.Form):
             raise forms.ValidationError("在庫が不足しています")
 
         return data
+
+
+class TicketSellingForm(forms.ModelForm):
+    class Meta:
+        model = models.Ticket
+        fields = (
+            'name',
+            'category',
+            'start_date',
+            'price',
+            'quantity',
+        )

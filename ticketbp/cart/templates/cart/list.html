@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}カート{% endblock %}
+
+{% block content %}
+  <table>
+    <thead>
+    <tr>
+      <th>チケット名</th>
+      <th>金額</th>
+      <th>購入枚数</th>
+      <th>在庫枚数</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart.items %}
+      <tr>
+        <td>{{ item.ticket.name }}</td>
+        <td>{{ item.ticket.price_display }}</td>
+        <td>{{ item.amount_display }}</td>
+        <td>{{ item.ticket.stock_amount_display }}</td>
+        <td>
+          <form action="{% url 'cart:delete' ticket_id=item.ticket.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="削除" />
+          </form>
+        </td>
+      </tr>
+    {% empty%}
+      <tr>
+        <td colspan="5">カートは空です</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p>合計金額:{{ cart.total_price_display }} </p>
+
+  {% if error %}
+    <span class="errorlist">
+        {{ error }}
+    </span>
+  {% endif %}
+
+  {% if cart.num_items > 0 %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="submit" value="注文" />
+    </form>
+{% endif %}
+{% endblock %}

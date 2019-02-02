@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}出品{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <ul>
+         {{ form.as_ul }}
+    </ul>
+     <a href="{% url 'tickets:list' %}">チケット一覧に戻る</a>
+    <input type="submit" value="確認画面へ" />
+  </form>
+{% endblock %}

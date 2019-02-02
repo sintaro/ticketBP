@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}出品ステータス変更{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <ul>
+      <li>チケット名:{{ ticket.name }} </li>
+      <li>カテゴリー:{{ ticket.category.name }} </li>
+      <li>開催日:{{ ticket.start_date }} </li>
+      <li>金額:{{ ticket.price_display }} </li>
+      <li>手数料: {{ ticket.fee_display }}</li>
+      <li>残枚数: {{ ticket.stock_amount_display }}</li>
+      <li>ステータス: {{ ticket.get_status_display }}</li>
+    </ul>
+    <a href="{% url 'tbpauth:mypage' %}">マイページに戻る</a>
+        <input type="submit" value="出品停止" />
+  </form>
+{% endblock %}
