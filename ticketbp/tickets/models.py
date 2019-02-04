@@ -46,12 +46,19 @@ class Ticket(models.Model):
     seller = models.ForeignKey('tbpauth.User',
                                on_delete=models.CASCADE,
                                related_name='selling_tickets')
+
     name = models.CharField("チケット名", max_length=128)
     category = models.ForeignKey(Category,
                                  verbose_name="カテゴリー",
                                  on_delete=models.SET_NULL,
                                  null=True, blank=True,
                                  related_name='tickets')
+    content = models.TextField(
+        verbose_name='内容',
+        blank=False,
+        null=True,
+        max_length=5000,
+    )
     start_date = models.DateField("開催日")
     price = models.PositiveIntegerField("金額(円)",
                                         validators=[validators.MinValueValidator(100),
@@ -60,7 +67,13 @@ class Ticket(models.Model):
                                            validators=[validators.MinValueValidator(1)])
 
     status = models.PositiveIntegerField("販売ステータス", choices=STATUS_CHOICES, default=STATUS_DISPLAY)
+
     created_at = models.DateTimeField(auto_now_add=True)
+
+    #チケットが解決したかどうか 未実装
+    is_solved = models.BooleanField(default=False)
+    #そのチケットが出品用のチケットかどうか　未実装
+    is_selling = models.BooleanField(default=False)
 
     def get_by_the_time(self):
     # """その時間が今からどのぐらい前か、人にやさしい表現で返す。"""
@@ -137,3 +150,47 @@ class Ticket(models.Model):
 
     def stock_amount_display(self):
         return '{:,d}枚'.format(self.stock_amount())
+
+class Answer(models.Model):
+    """チケットに紐づくコメント"""
+    user = models.ForeignKey('tbpauth.User',
+                               on_delete=models.CASCADE,
+                               related_name='user')
+    title = models.CharField("タイトル", max_length=128)
+    content = models.TextField(verbose_name='内容',
+        blank=False,
+        null=True,
+        max_length=5000,
+    )
+    target = models.ForeignKey(Ticket, on_delete=models.CASCADE, verbose_name='対象チケット',related_name='ticket')
+    created_at = models.DateTimeField('作成日', auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+class BookmarkBase(models.Model):
+
+    class Meta:
+        abstract = True
+
+    user = models.ForeignKey('tbpauth.User', on_delete=models.CASCADE,verbose_name="User")
+
+    def __str__(self):
+        return self.user.username
+
+class BookmarkTicket(BookmarkBase):
+    class Meta:
+        db_table = "bookmark_ticket"
+ 
+    obj = models.ForeignKey(Ticket, on_delete=models.CASCADE,verbose_name="Ticket")
+
+class BookmarkAnswer(BookmarkBase):
+    class Meta:
+        db_table = "bookmark_answer"
+ 
+    obj = models.ForeignKey(Answer, on_delete=models.CASCADE,verbose_name="Answer")
+
+ 
+
+
