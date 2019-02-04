@@ -15,3 +15,7 @@ class TicketAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'status', 'start_date')
     list_select_related = ('category',)
     ordering = ('-created_at',)
+
+@admin.register(models.Answer)
+class AdminAnswer(admin.ModelAdmin):
+    pass

@@ -72,8 +72,8 @@ class Ticket(models.Model):
 
     #チケットが解決したかどうか 未実装
     is_solved = models.BooleanField(default=False)
-    #そのチケットが出品用のチケットかどうか　未実装
-    is_selling = models.BooleanField(default=False)
+    #そのチケットが出品用のチケットか無料お悩みかどうか　未実装
+    is_free = models.BooleanField(default=False)
 
     def get_by_the_time(self):
     # """その時間が今からどのぐらい前か、人にやさしい表現で返す。"""
@@ -166,11 +166,10 @@ class Answer(models.Model):
     created_at = models.DateTimeField('作成日', auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return self.target.name
 
 
 class BookmarkBase(models.Model):
-
     class Meta:
         abstract = True
 
@@ -185,9 +184,9 @@ class BookmarkTicket(BookmarkBase):
  
     obj = models.ForeignKey(Ticket, on_delete=models.CASCADE,verbose_name="Ticket")
 
-class BookmarkAnswer(BookmarkBase):
+class BestAnswer(BookmarkBase):
     class Meta:
-        db_table = "bookmark_answer"
+        db_table = "best_answer"
  
     obj = models.ForeignKey(Answer, on_delete=models.CASCADE,verbose_name="Answer")
 
