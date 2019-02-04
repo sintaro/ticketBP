@@ -1,6 +1,7 @@
 from django.core import validators
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from .validators import StepValueValidator
 
@@ -60,6 +61,20 @@ class Ticket(models.Model):
 
     status = models.PositiveIntegerField("販売ステータス", choices=STATUS_CHOICES, default=STATUS_DISPLAY)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_by_the_time(self):
+    # """その時間が今からどのぐらい前か、人にやさしい表現で返す。"""
+        result = timezone.now() - self.created_at
+        s = result.total_seconds()
+        hours = int(s / 3600)
+        if hours >= 24:
+            day = int(hours / 24)
+            return '約{0}日前'.format(day)
+        elif hours == 0:
+            minute = int(s / 60)
+            return '約{0}分前'.format(minute)
+        else:
+            return '約{0}時間前'.format(hours)
 
     class Meta:
         db_table = 'ticket'

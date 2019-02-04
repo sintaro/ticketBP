@@ -19,6 +19,7 @@
     <tbody>
     {% for ticket in tickets %}
       <tr>
+        <td>{{ticket.get_by_the_time}}</td>
         <td>{{ ticket.start_date }}</td>
         <td>{{ ticket.category.name }}</td>
         <td>{{ ticket.name }}</td>
