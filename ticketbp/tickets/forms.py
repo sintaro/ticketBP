@@ -46,3 +46,5 @@ class TicketSellingForm(forms.ModelForm):
             'price',
             'quantity',
         )
+
+
