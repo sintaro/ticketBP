@@ -5,9 +5,9 @@
       <ul>
         {% if user.is_authenticated %}
           <li><a href="{% url 'tbpauth:mypage' %}">マイページ　{{ user.get_full_name }}</a></li>
-<!--           <li><a href="{% url 'cart:list' %}"><i class="icon-shopping-cart"></i>カート ({{ request.cart.num_items }})</a></li>
+          <li><a href="{% url 'cart:list' %}"><i class="icon-shopping-cart"></i>カート ({{ request.cart.num_items }})</a></li>
           <li><a href="{% url 'tickets:sell' %}"><i class="icon-plus-sign"></i>出品</a></li>
-        <li><a href="contact_us.html"><i class="icon-envelope"></i>メッセージ</a></li> -->
+        <li><a href="contact_us.html"><i class="icon-envelope"></i>メッセージ</a></li>
           <li><a href="{% url 'logout' %}"><i class="icon-user"></i>ログアウト</a></li>
 <!-- 専門家の時のheadert-top-navまだ -->
         {% else %}

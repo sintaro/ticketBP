@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <header id="header">
   <section class="container clearfix">
-  <div class="logo"><a href="index.html"><img alt="" src="{% static 'images/logo2.png' %}"></a></div>
+  <div class="logo"><a href="{% url 'tickets:list' %}"><img alt="" src="{% static 'images/logo2.png' %}"></a></div>
 		<nav class="navigation">
 			<ul>
 				<li class="current_page_item"><a href="index.html">ホーム</a>
