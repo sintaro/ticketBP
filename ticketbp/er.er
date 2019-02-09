@@ -1,0 +1,173 @@
+[tbpauth_department]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(150)"}
+[ticket]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(128)"}
+    start_date {label:"DATE"}
+    price {label:"INTEGER"}
+    quantity {label:"INTEGER"}
+    status {label:"INTEGER"}
+    created_at {label:"DATETIME"}
+    category_id {label:"INTEGER"}
+    seller_id {label:"CHAR(32)"}
+    content {label:"TEXT"}
+    answer_id {label:"INTEGER"}
+    bookmarks_id {label:"INTEGER"}
+[blog_tag]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(255)"}
+[auth_group]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(80)"}
+[blog_reply]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(255)"}
+    text {label:"TEXT"}
+    created_at {label:"DATETIME"}
+    target_id {label:"INTEGER"}
+[tbpauth_user_departments]
+    *id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+    department_id {label:"INTEGER"}
+[bookmark_ticket]
+    *id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+    bookmark_ticket_id {label:"INTEGER"}
+[django_session]
+    *session_key {label:"VARCHAR(40)"}
+    session_data {label:"TEXT"}
+    expire_date {label:"DATETIME"}
+[django_migrations]
+    *id {label:"INTEGER"}
+    app {label:"VARCHAR(255)"}
+    name {label:"VARCHAR(255)"}
+    applied {label:"DATETIME"}
+[blog_post]
+    *id {label:"INTEGER"}
+    title {label:"VARCHAR(255)"}
+    text {label:"TEXT"}
+    is_public {label:"BOOLEAN"}
+    description {label:"TEXT"}
+    keywords {label:"VARCHAR(255)"}
+    created_at {label:"DATETIME"}
+    updated_at {label:"DATETIME"}
+[tbpauth_user_groups]
+    *id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+    group_id {label:"INTEGER"}
+[category]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(32)"}
+    extra_fee_rate {label:"REAL"}
+    display_priority {label:"INTEGER"}
+[auth_permission]
+    *id {label:"INTEGER"}
+    content_type_id {label:"INTEGER"}
+    codename {label:"VARCHAR(100)"}
+    name {label:"VARCHAR(255)"}
+[django_admin_log]
+    *id {label:"INTEGER"}
+    action_time {label:"DATETIME"}
+    object_id {label:"TEXT"}
+    object_repr {label:"VARCHAR(200)"}
+    change_message {label:"TEXT"}
+    content_type_id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+    action_flag {label:"INTEGER"}
+[tickets_answer]
+    *id {label:"INTEGER"}
+    title {label:"VARCHAR(128)"}
+    content {label:"TEXT"}
+    created_at {label:"DATETIME"}
+    user_id {label:"CHAR(32)"}
+[tbpauth_user_user_permissions]
+    *id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+    permission_id {label:"INTEGER"}
+[purchase]
+    *id {label:"INTEGER"}
+    amount {label:"INTEGER"}
+    bought_at {label:"DATETIME"}
+    ticket_id {label:"INTEGER"}
+    user_id {label:"CHAR(32)"}
+[django_content_type]
+    *id {label:"INTEGER"}
+    app_label {label:"VARCHAR(100)"}
+    model {label:"VARCHAR(100)"}
+[blog_comment]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(255)"}
+    text {label:"TEXT"}
+    email {label:"VARCHAR(254)"}
+    created_at {label:"DATETIME"}
+    target_id {label:"INTEGER"}
+[review_answer]
+    *id {label:"INTEGER"}
+    point {label:"INTEGER"}
+    to_answer_id {label:"INTEGER"}
+    from_person_id {label:"CHAR(32)"}
+[tbpauth_user]
+    password {label:"VARCHAR(128)"}
+    last_login {label:"DATETIME"}
+    is_superuser {label:"BOOLEAN"}
+    *uuid {label:"CHAR(32)"}
+    username {label:"VARCHAR(150)"}
+    full_name {label:"VARCHAR(150)"}
+    email {label:"VARCHAR(254)"}
+    is_staff {label:"BOOLEAN"}
+    is_active {label:"BOOLEAN"}
+    date_joined {label:"DATETIME"}
+    address1 {label:"VARCHAR(32)"}
+    address2 {label:"VARCHAR(128)"}
+[sqlite_sequence]
+    name {label:"Null"}
+    seq {label:"Null"}
+[tickets_onayamiticket]
+    *id {label:"INTEGER"}
+    name {label:"VARCHAR(50)"}
+    content {label:"TEXT"}
+    start_date {label:"DATE"}
+    is_solved {label:"BOOLEAN"}
+    answer_id {label:"INTEGER"}
+    category_id {label:"INTEGER"}
+    offer_user_id {label:"CHAR(32)"}
+    bookmarks_id {label:"INTEGER"}
+[auth_group_permissions]
+    *id {label:"INTEGER"}
+    group_id {label:"INTEGER"}
+    permission_id {label:"INTEGER"}
+[blog_post_tags]
+    *id {label:"INTEGER"}
+    post_id {label:"INTEGER"}
+    tag_id {label:"INTEGER"}
+tickets_answer *--? ticket
+bookmark_ticket *--? ticket
+tbpauth_user *--? ticket
+category *--? ticket
+blog_comment *--? blog_reply
+tbpauth_department *--? tbpauth_user_departments
+tbpauth_user *--? tbpauth_user_departments
+ticket *--? bookmark_ticket
+tbpauth_user *--? bookmark_ticket
+auth_group *--? tbpauth_user_groups
+tbpauth_user *--? tbpauth_user_groups
+django_content_type *--? auth_permission
+django_content_type *--? django_admin_log
+tbpauth_user *--? django_admin_log
+tbpauth_user *--? tickets_answer
+auth_permission *--? tbpauth_user_user_permissions
+tbpauth_user *--? tbpauth_user_user_permissions
+tbpauth_user *--? purchase
+ticket *--? purchase
+blog_post *--? blog_comment
+tickets_answer *--? review_answer
+tbpauth_user *--? review_answer
+tickets_answer *--? tickets_onayamiticket
+tbpauth_user *--? tickets_onayamiticket
+bookmark_ticket *--? tickets_onayamiticket
+category *--? tickets_onayamiticket
+auth_group *--? auth_group_permissions
+auth_permission *--? auth_group_permissions
+blog_post *--? blog_post_tags
+blog_tag *--? blog_post_tags

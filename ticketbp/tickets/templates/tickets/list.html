@@ -5,7 +5,15 @@
 
 {% block content %}
 {% include 'includes/first.html' %}
-  <h1>チケット！</h1>
+  <h1>無料チケット！</h1>
+    {% for onayamiticket in onayami_tickets %}
+      <td>{{ onayamiticket.offer_user.username }}</td>
+      <td>{{ onayamiticket.solved_status }}</td>
+      <td>{{ onayamiticket.bookmarks.bookmark_ticket.user.username }}</td>
+      <td>{{ onayamiticket.name }}</td>
+      <td>{{ onayamiticket.category.name }}</td>
+    {% endfor %}
+  <h1>有料チケット！</h1>
   <table>
     <thead>
     <tr>
@@ -18,22 +26,23 @@
     </thead>
     <tbody>
     {% for ticket in tickets %}
-      <tr>
-        <td>{{ticket.get_by_the_time}}</td>
-        <td>{{ ticket.start_date }}</td>
-        <td>{{ ticket.category.name }}</td>
-        <td>{{ ticket.name }}</td>
-        <td>{{ ticket.price_display }}</td>
-        {% if user.is_authenticated %}
-          <td><a href="{% url 'tickets:detail' ticket_id=ticket.id %}">購入</a></td>
-        {% else %}
-          <td></td>
-        {% endif %}
-      </tr>
-    {% empty %}
-      <tr>
-        <td colspan="5">チケットはありませんでした</td>
-      </tr>
+        <tr> 
+          <td>
+              <a href="{% url 'tickets:detail' ticket_id=ticket.id %}">{{ ticket.name }}</a></td>
+          <td>{{ticket.get_by_the_time}}</td>
+          <td>{{ ticket.start_date }}</td>
+          <td>{{ ticket.category.name }}</td>
+          <td>{{ ticket.price_display }}</td>
+          {% if user.is_authenticated %}
+          <td>購入</td>
+          {% else %}
+            <td></td>
+          {% endif %}
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5">チケットはありませんでした</td>
+        </tr>
     {% endfor %}
     </tbody>
   </table>

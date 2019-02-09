@@ -47,4 +47,16 @@ class TicketSellingForm(forms.ModelForm):
             'quantity',
         )
 
+# class TicketSolveForm(forms.ModelForm):
 
+#     class Meta:
+#         model = models.Ticket
+#         fields =(
+#             'is_solved',
+#             )
+#         widget=forms.BooleanField(
+#         label='read terms',
+#         required=True,
+#         widget=forms.CheckboxInput(attrs={'class': 'check'}),
+#     )
+        # widgets =  forms.CheckboxSelectMultiple

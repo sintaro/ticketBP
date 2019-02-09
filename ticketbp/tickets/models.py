@@ -29,6 +29,31 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+class Answer(models.Model):
+    """お悩みチケットへの返信"""
+    user = models.ForeignKey('tbpauth.User',
+                               on_delete=models.CASCADE,
+                               related_name='user')
+    title = models.CharField("タイトル", max_length=128)
+    content = models.TextField(verbose_name='内容',
+        blank=False,
+        null=True,
+        max_length=5000,
+    )
+    created_at = models.DateTimeField('作成日', auto_now_add=True)
+
+    onayami_ticket = models.ForeignKey('OnayamiTicket',on_delete=models.CASCADE,
+                                        blank=True,
+                                        null=True,
+                                        related_name='to_answer') 
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        db_table = 'answer'
+        verbose_name = 'お悩みチケットへの返信'
+        verbose_name_plural = 'お悩みチケットへの返信'
 
 class Ticket(models.Model):
     """ 販売されているチケット
@@ -42,7 +67,6 @@ class Ticket(models.Model):
         (STATUS_STOPPED, '出品停止'),  # 以降購入ができない状態。購入済みのチケットは有効
         (STATUS_SOLD_OUT, '完売')  # 出品したチケットが売切れた状態
     )
-
     seller = models.ForeignKey('tbpauth.User',
                                on_delete=models.CASCADE,
                                related_name='selling_tickets')
@@ -53,6 +77,12 @@ class Ticket(models.Model):
                                  on_delete=models.SET_NULL,
                                  null=True, blank=True,
                                  related_name='tickets')
+
+
+    bookmark_people = models.ManyToManyField('tbpauth.User',
+                               blank=True, null=True,
+                               related_name='bookmark_people')
+
     content = models.TextField(
         verbose_name='内容',
         blank=False,
@@ -70,10 +100,6 @@ class Ticket(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    #チケットが解決したかどうか 未実装
-    is_solved = models.BooleanField(default=False)
-    #そのチケットが出品用のチケットか無料お悩みかどうか　未実装
-    is_free = models.BooleanField(default=False)
 
     def get_by_the_time(self):
     # """その時間が今からどのぐらい前か、人にやさしい表現で返す。"""
@@ -91,8 +117,8 @@ class Ticket(models.Model):
 
     class Meta:
         db_table = 'ticket'
-        verbose_name = 'チケット'
-        verbose_name_plural = 'チケット'
+        verbose_name = '有料チケット'
+        verbose_name_plural = '有料チケット'
 
     def __str__(self):
         return self.name
@@ -151,45 +177,75 @@ class Ticket(models.Model):
     def stock_amount_display(self):
         return '{:,d}枚'.format(self.stock_amount())
 
-class Answer(models.Model):
-    """チケットに紐づくコメント"""
-    user = models.ForeignKey('tbpauth.User',
+
+class OnayamiTicket(models.Model):
+    STATUS_SOLVED = 0
+    STATUS_NON_SOLVED = 1
+    STATUS_WANTED_SOLVED = 2
+
+    STATUS_CHOICES = (
+        (STATUS_SOLVED, '解決済み'),  
+        (STATUS_NON_SOLVED , '未解決'),  
+        (STATUS_WANTED_SOLVED, '急募')
+    )
+
+    offer_user = models.ForeignKey('tbpauth.User',
                                on_delete=models.CASCADE,
-                               related_name='user')
-    title = models.CharField("タイトル", max_length=128)
-    content = models.TextField(verbose_name='内容',
+                               related_name='offering_user')
+
+    name = models.CharField("お悩みタイトル", max_length=50)
+    category = models.ForeignKey(Category,
+                                 verbose_name="お悩みカテゴリ",
+                                 on_delete=models.SET_NULL,
+                                 null=True, blank=True,
+                                 related_name='onayamiticket')
+
+    bookmark_people = models.ManyToManyField('tbpauth.User',
+                               blank=True, null=True,
+                               related_name='onayami_people')
+
+    content = models.TextField(
+        verbose_name='内容',
         blank=False,
         null=True,
         max_length=5000,
     )
-    target = models.ForeignKey(Ticket, on_delete=models.CASCADE, verbose_name='対象チケット',related_name='ticket')
-    created_at = models.DateTimeField('作成日', auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True,null=True, blank=False)
+
+
+    #チケットが解決したかどうか
+    solved_status = models.PositiveIntegerField("解決ステータス",choices=STATUS_CHOICES,default=STATUS_NON_SOLVED)
+
+    display_priority = models.IntegerField("課金での表示優先度_",null=True, blank=True,
+                                           help_text="数字が大きいカテゴリーほど一覧表示で上位に表示されます。")
+
+    class Meta:
+        db_table = 'onayami_ticket'
+        verbose_name = 'お悩みチケット'
+        verbose_name_plural = 'お悩みチケット'
 
     def __str__(self):
-        return self.target.name
+        return self.name
 
-
-class BookmarkBase(models.Model):
+class AnswerReview(models.Model):
     class Meta:
-        abstract = True
+        db_table = "review_answer"
+    
+    SCORE_CHOICES = (
+    (1, '★1'),
+    (2, '★2'),
+    (3, '★3'),
+    (4, '★4'),
+    (5, '★5'),
+)
+    point = models.IntegerField('評価点', choices=SCORE_CHOICES,null=True, blank=True)
+    from_user =  models.ForeignKey('tbpauth.User',null=True, blank=True, on_delete=models.CASCADE,verbose_name="review_user")
 
-    user = models.ForeignKey('tbpauth.User', on_delete=models.CASCADE,verbose_name="User")
+    def __init__(self):
+        return self.point
 
-    def __str__(self):
-        return self.user.username
-
-class BookmarkTicket(BookmarkBase):
     class Meta:
-        db_table = "bookmark_ticket"
- 
-    obj = models.ForeignKey(Ticket, on_delete=models.CASCADE,verbose_name="Ticket")
-
-class BestAnswer(BookmarkBase):
-    class Meta:
-        db_table = "best_answer"
- 
-    obj = models.ForeignKey(Answer, on_delete=models.CASCADE,verbose_name="Answer")
-
- 
-
+        db_table = 'answerreview'
+        verbose_name = 'お悩みチケットへの返信の評価'
+        verbose_name_plural = 'お悩みチケットへの返信の評価'
 
