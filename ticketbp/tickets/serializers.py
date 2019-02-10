@@ -4,12 +4,10 @@ from rest_framework import serializers
 from .models import Category,Answer,Ticket,OnayamiTicket,AnswerReview
 
 class UserSerializer(serializers.ModelSerializer):
-    """ A serializer class for the User model """
-    class Meta:
-    	model = User
 
-        fields = ('id', 'uuid', 'username', 'full_name',
-          'email', 'departments', 'is_bussiness_account','is_active','date_joined')
+	class Meta:
+		model = User
+		fields = ('id','uuid','username','full_name','email','departments','is_bussiness_account','is_active','date_joined')
 
 class  CategorySerializer(serializers.ModelSerializer):
 

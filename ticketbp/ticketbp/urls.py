@@ -19,6 +19,11 @@ from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token
 
+from tickets.api_urls import ticket_router
+
+api_urlpatterns = [
+    path('tickets/', include(ticket_router.urls)),
+]
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +33,7 @@ urlpatterns = [
     path('cart/', include('cart.urls')),
     path('', include('tickets.urls')),
     path('obtain_jwt_token/', obtain_jwt_token),
+    path('api/1.0/', include(api_urlpatterns)),
 ]
 
 if settings.DEBUG:
