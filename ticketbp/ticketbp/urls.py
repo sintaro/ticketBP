@@ -17,6 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from rest_framework_jwt.views import obtain_jwt_token
 
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('account/', include('tbpauth.urls')),
     path('cart/', include('cart.urls')),
     path('', include('tickets.urls')),
+    path('obtain_jwt_token/', obtain_jwt_token),
 ]
 
 if settings.DEBUG:
