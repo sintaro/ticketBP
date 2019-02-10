@@ -9,7 +9,7 @@
     {% for onayamiticket in onayami_tickets %}
       <td>{{ onayamiticket.offer_user.username }}</td>
       <td>{{ onayamiticket.solved_status }}</td>
-      <td>{{ onayamiticket.bookmarks.bookmark_ticket.user.username }}</td>
+      <td>{{ onayamiticket.bookmarks.bookmark_ticket.user.username  }}</td>
       <td>{{ onayamiticket.name }}</td>
       <td>{{ onayamiticket.category.name }}</td>
     {% endfor %}
