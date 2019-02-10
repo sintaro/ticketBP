@@ -65,6 +65,13 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    is_bussiness_account = models.BooleanField(
+        _('active'),
+        default=False,
+        help_text=_(
+            'ビジネスとしての利用かどうか、出品などプロ側の機能の権限付与'
+        ),
+    )
     date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
 
     objects = UserManager()

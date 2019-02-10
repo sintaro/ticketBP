@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'debug_toolbar',
     'corsheaders',
+    'rest_framework',
     # Own Apps
     'cart',
     'purchase',
