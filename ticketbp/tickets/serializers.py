@@ -23,17 +23,28 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 		fields = '__all__'
 
+class OnayamiTicketSerializer(serializers.ModelSerializer):
+
+	answers = AnswerSerializer(many=True, source='to_answer')
+	
+	class Meta:
+		model = OnayamiTicket
+
+		fields = (
+			'offer_user',
+			'name',
+			'content',
+			'category',
+			'bookmark_people',
+			'created_at',
+			'solved_status',
+			'display_priority',
+			'answers')
+
 class TicketSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = Ticket
-
-		fields = '__all__'
-
-class OnayamiTicketSerializer(serializers.ModelSerializer):
-	
-	class Meta:
-		model = OnayamiTicket
 
 		fields = '__all__'
 
